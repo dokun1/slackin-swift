@@ -6,3 +6,4 @@
 /spec.json
 ./config/localdev-config.json
 *.xcodeproj
+slackkey.txt

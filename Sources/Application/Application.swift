@@ -9,7 +9,10 @@ import Health
 public let projectPath = ConfigurationManager.BasePath.project.path
 public let health = Health()
 
+
+
 public class App {
+    var token: String?
     let router = Router()
     let cloudEnv = CloudEnv()
 
@@ -21,9 +24,11 @@ public class App {
     func postInit() throws {
         // Endpoints
         initializeHealthRoutes(app: self)
+        initializeSlackRoutes(app: self)
     }
 
-    public func run() throws {
+    public func run(token: String) throws {
+        self.token = token
         try postInit()
         Kitura.addHTTPServer(onPort: cloudEnv.port, with: router)
         Kitura.run()
