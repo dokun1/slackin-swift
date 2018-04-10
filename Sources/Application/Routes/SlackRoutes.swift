@@ -7,7 +7,6 @@
 
 import Foundation
 import KituraContracts
-import SwiftyRequest
 
 var requestToken: String?
 
@@ -36,11 +35,13 @@ private func inviteHandler(email: String, completion: @escaping (SlackResponse?,
             completion(nil, RequestError.unauthorized)
             return
         }
-        let url = URL(string: "https://slack.com/api/users.admin.invite?token=\(token)&email=\(email)&channels=\(approvedChannels.dropLast())")
+        guard let url = URL(string: "https://slack.com/api/users.admin.invite?token=\(token)&email=\(email)&channels=\(approvedChannels.dropLast())") else {
+            completion(nil, RequestError.badRequest)
+            return
+        }
         do {
-            let response = try Data(contentsOf: url!)
-            let decoder = JSONDecoder()
-            let slackResponse = try decoder.decode(SlackResponse.self, from: response)
+            let response = try Data(contentsOf: url)
+            let slackResponse = try JSONDecoder().decode(SlackResponse.self, from: response)
             if let _ = slackResponse.error {
                 completion(nil, .unauthorized)
             } else {
@@ -49,7 +50,6 @@ private func inviteHandler(email: String, completion: @escaping (SlackResponse?,
         } catch let error {
             completion(nil, RequestError(rawValue: 404, reason: error.localizedDescription))
         }
-        completion(nil, nil)
     }
 }
 

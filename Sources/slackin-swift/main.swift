@@ -4,24 +4,17 @@ import LoggerAPI
 import HeliumLogger
 import Application
 
-enum SlackError: String, Error {
-    case noToken = "No token has been specified"
-    case invalidToken = "Token not valid"
-}
-
 var token: String?
 
-let arguments = ProcessInfo().arguments
-print(arguments)
-
-//if let tokenArgument = 
-
-if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-    let fileURL = dir.appendingPathComponent("slackkey.txt")
+if let argumentToken = SlackArguments.extractToken(from: ProcessInfo().arguments) {
+    token = argumentToken
+} else {
     do {
-        token = try String(contentsOf: fileURL, encoding: .utf8).trimmingCharacters(in: .newlines)
+        let debugToken = try SlackArguments.debug_extractTokenFromFile()
+        token = debugToken
     } catch let error {
-        print(error.localizedDescription)
+        Log.error(error.localizedDescription)
+        exit(0)
     }
 }
 
