@@ -1,4 +1,20 @@
-## Scaffolded Swift Kitura server application
+## slackin-swift
+
+### Running in Xcode
+
+1) Create a file in your `~/Documents` directory called `slackkey.txt`.  
+2) For the slack you want to run this with, make the only contents of that file the legacy slack token you are working with.  
+3) Save the file,
+
+When you run this in Xcode, if you don't provide a token as a command line argument, it will search for this file and read it, and use that. You can debug on `main.swift` to see what it's doing.
+
+If you run this from the command line, you'll want to run:
+
+```bash
+.build/debug/slackin-swift **insert token here**
+```
+
+Let me know if you have further questions.
 
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
 [![Platform](https://img.shields.io/badge/platform-swift-lightgrey.svg?style=flat)](https://developer.ibm.com/swift/)
