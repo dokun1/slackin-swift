@@ -7,10 +7,22 @@
 
 import Foundation
 
+struct SlackTeamIcon: Codable {
+    var image_34: String
+    var image_44: String
+    var image_68: String
+    var image_88: String
+    var image_102: String
+    var image_132: String
+    var image_230: String
+    var image_original: String
+}
+
 struct SlackTeam: Codable {
     var id: String
     var name: String
     var domain: String
+    var icon: SlackTeamIcon
     
     static func getInfo(token: String) throws -> SlackTeam? {
         let url = URL(string: "https://slack.com/api/team.info?token=\(token)")

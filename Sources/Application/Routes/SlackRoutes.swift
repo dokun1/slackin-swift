@@ -62,7 +62,7 @@ private func channelHandler(completion: @escaping ([SlackChannel]?, RequestError
     }
 }
 
-private func teamHandler(completion: @escaping(SlackTeam?, RequestError?) -> Void) {
+private func teamHandler(completion: @escaping (SlackTeam?, RequestError?) -> Void) {
     guard let token = requestToken else {
         completion(nil, RequestError.unauthorized)
         return

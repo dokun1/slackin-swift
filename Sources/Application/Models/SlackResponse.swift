@@ -12,4 +12,5 @@ struct SlackResponse: Codable {
     var channels: [SlackChannel]?
     var error: String?
     var team: SlackTeam?
+    var members: [SlackUser]?
 }

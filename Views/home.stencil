@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Slack Inviter</title>
+        <title>Join {{ slackTeamName }} on Slack!</title>
+        <link rel="shortcut icon" type="image/png" href="https://slack.global.ssl.fastly.net/272a/img/icons/favicon-32.png"/>
         <link rel="stylesheet" href="/css/index.css">
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin,latin-ext">
     </head>
     <body>
-        <div class='menu-container'>
-            <div class='title'><h1>Slack Inviter Swift</h1></div>
+        <div class="menu-container">
+            <h2><img src="{{ slackIconURL }}" height=70 width=70>  +  <img src="/img/slackLogo.png" height=70 width=70></h2>
         </div>
         <div class="menu-container">
-            <h2>{{ slackTeamName }}</h4>
+            <h2>Join {{ slackTeamName }} on Slack.</h2>
+        </div>
+        <div class="menu-container">
+            <h2>{{ usersOnline }} users online now out of {{ usersRegistered }} registered.</h2>
         </div>
         <div class="menu-add">
             <input id="emailField" class="acronym-field" name="email" placeholder="insert email here" />
         </div>
         <div class="menu-add">
-            <input class="button-primary" type="submit" value="Sign Up" onClick="submitEmail()">
+            <input class="button-primary" type="submit" value="GET MY INVITE" onClick="submitEmail()">
         </div>
+        <div class="menu-add">
+            <center>
+            <h4>or <a href="https://{{ slackDomain }}.slack.com">sign in.</a><h4>
+            </center>
+        </div>
+        <footer>
+            <center>
+                <p><a href="http://kitura.io"><img src="/img/PoweredByKituraBlackText.png" width=300></a></p>
+            </center>
+        </footer>
         
         <script type="text/javascript">
             function submitEmail() {
@@ -31,7 +45,7 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            alert("User invited!!");
+                            alert("User invited!!")
                         } else {
                             alert("Something went wrong. Error code: " + xhr.status);
                         }
