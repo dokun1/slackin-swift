@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.menu-container {
+    color: #000;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    font-family: 'Open Sans', 'helvetica Neue', 'Helvetica', 'Arial', "Lucida Grande", sans-serif;
+}
+.menu {
+    border: 1px solid #FFF;
+    width: 900px;
+}
+.menu-add {
+    color: #000;
+    padding: 2px;
+    display: flex;
+    justify-content: space-around;
+    font-family: 'Open Sans', 'Arial', sans-serif;
+}
+.menu-add-component {
+    color: #000;
+    display: flex;
+    justify-content: space-around;
+    width: 300px;
+    font-family: 'Open Sans', 'Arial', sans-serif;
+}
+input.button-primary {
+    background-color: #00B3E4;
+    color: #FFF;
+    border-color: black;
+    padding: 4px;
+    font-family: 'Open Sans', 'Arial', sans-serif;
+}
+input.acronym-field {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    border-color: #333;
+    border-width: 1px;
+}
+::-webkit-input-placeholder {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+}
+:-moz-placeholder {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    opacity: 1;
+}
+::-moz-placeholder {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    opacity: 1;
+}
+:-ms-input-placeholder {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    color: #909;
+}
+::-ms-input-placeholder {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    color: #909;
+}

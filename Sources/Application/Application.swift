@@ -9,8 +9,6 @@ import Health
 public let projectPath = ConfigurationManager.BasePath.project.path
 public let health = Health()
 
-
-
 public class App {
     var token: String?
     let router = Router()
@@ -25,6 +23,7 @@ public class App {
         // Endpoints
         initializeHealthRoutes(app: self)
         initializeSlackRoutes(app: self)
+        initializeWebClientRoutes(app: self)
     }
 
     public func run(token: String) throws {

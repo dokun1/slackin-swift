@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Slack Inviter</title>
+        <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin,latin-ext">
+    </head>
+    <body>
+        <div class='menu-container'>
+            <div class='title'><h1>Slack Inviter Swift</h1></div>
+        </div>
+        <div class="menu-container">
+            <h2>{{ slackTeamName }}</h4>
+        </div>
+        <div class="menu-add">
+            <input id="emailField" class="acronym-field" name="email" placeholder="insert email here" />
+        </div>
+        <div class="menu-add">
+            <input class="button-primary" type="submit" value="Sign Up" onClick="submitEmail()">
+        </div>
+        
+        <script type="text/javascript">
+            function submitEmail() {
+                var email = document.getElementById("emailField").value;
+                if (email == "") {
+                    alert("Email not entered!");
+                    return;
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/api/invite/" + email);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            alert("User invited!!");
+                        } else {
+                            alert("Something went wrong. Error code: " + xhr.status);
+                        }
+                    }
+                }
+                xhr.send();
+            }
+        </script>
+        
+    </body>
+</html>
