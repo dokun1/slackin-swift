@@ -1,5 +1,11 @@
 ## slackin-swift
 
+### Building the project
+
+1) Clone this repo
+2) From the root directory, run `swift build`
+3) From the root directory, run `swift package generate-xcodeproj`
+
 ### Running in Xcode
 
 1) Create a file in your `~/Documents` directory called `slackkey.txt`.  
