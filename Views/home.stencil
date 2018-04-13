@@ -7,32 +7,34 @@
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin,latin-ext">
     </head>
     <body>
+<div class="splash">
         <div class="menu-container">
-            <h2><img src="{{ slackIconURL }}" height=70 width=70>  +  <img src="/img/slackLogo.png" height=70 width=70></h2>
+<div class="logos"><img src="{{ slackIconURL }}" height=50 width=50> </div> <div class="plus">+</div> <div class="logos"> <img src="/img/slackLogo.png" height=50 width=50></div>
         </div>
         <div class="menu-container">
-            <h2>Join {{ slackTeamName }} on Slack.</h2>
+            <p class="text1">Join <b>{{ slackTeamName }}</b> on Slack.</p>
         </div>
         <div class="menu-container">
-            <h2>{{ usersOnline }} users online now out of {{ usersRegistered }} registered.</h2>
+            <p class="text2"><b style="color:#DE1E64">{{ usersOnline }}</b> users online now out of <b>{{ usersRegistered }}</b> registered.</p>
         </div>
         <div class="menu-add">
-            <input id="emailField" class="acronym-field" name="email" placeholder="insert email here" />
+            <input id="emailField" class="acronym-field" name="email" placeholder="you@yourdomain.com" />
         </div>
         <div class="menu-add">
             <input class="button-primary" type="submit" value="GET MY INVITE" onClick="submitEmail()">
         </div>
         <div class="menu-add">
             <center>
-            <h4>or <a href="https://{{ slackDomain }}.slack.com">sign in.</a><h4>
+            <p>or <a href="https://{{ slackDomain }}.slack.com">sign in.</a><p>
             </center>
         </div>
         <footer>
             <center>
                 <p><a href="http://kitura.io"><img src="/img/PoweredByKituraBlackText.png" width=300></a></p>
             </center>
+
         </footer>
-        
+        </div>
         <script type="text/javascript">
             function submitEmail() {
                 var email = document.getElementById("emailField").value;
@@ -54,6 +56,6 @@
                 xhr.send();
             }
         </script>
-        
+        </div>
     </body>
 </html>
