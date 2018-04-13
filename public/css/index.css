@@ -4,11 +4,14 @@
     box-sizing: border-box;
 }
 .menu-container {
+    background-color: white;
     color: #000;
-    padding: 20px 0;
+ padding-left: 200px 0;
     display: flex;
     justify-content: center;
     font-family: 'Open Sans', 'helvetica Neue', 'Helvetica', 'Arial', "Lucida Grande", sans-serif;
+    text-align: center;
+    font-size:small;
 }
 .menu {
     border: 1px solid #FFF;
@@ -16,29 +19,38 @@
 }
 .menu-add {
     color: #000;
-    padding: 2px;
+    padding: 3px;
     display: flex;
     justify-content: space-around;
-    font-family: 'Open Sans', 'Arial', sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial;
+    font-size:x-small;
+    
+    
 }
 .menu-add-component {
     color: #000;
     display: flex;
     justify-content: space-around;
     width: 300px;
-    font-family: 'Open Sans', 'Arial', sans-serif;
+    
+    font-family: "Helvetica Neue", Helvetica, Arial;
 }
+
 input.button-primary {
     background-color: #DE1E64;
     color: #FFF;
-    border-color: black;
-    padding: 4px;
+    margin-bottom: 10px;
+    padding:10px 128px 10px 128px;
+    
     font-family: 'Open Sans', 'Arial', sans-serif;
 }
 input.acronym-field {
     font-family: 'Open Sans', 'Arial', sans-serif;
-    border-color: #333;
-    border-width: 1px;
+    border-color: rgb(214,214,214);
+    
+    padding:10px 100px 10px 100px;
+    margin: 4px;
+    
 }
 ::-webkit-input-placeholder {
     font-family: 'Open Sans', 'Arial', sans-serif;
@@ -58,4 +70,26 @@ input.acronym-field {
 ::-ms-input-placeholder {
     font-family: 'Open Sans', 'Arial', sans-serif;
     color: #909;
+}
+.logos{
+    margin-right: 37px;
+    margin-left:37px;
+}
+.splash{
+    margin-top:100px
+}
+.plus{
+    margin-top: 19px;
+    color: rgb(214,214,214);
+}
+.text1{
+    margin-top:33px;
+    font-size:medium;
+}
+.text2{
+    margin-bottom:16px;
+    font-size:medium;
+}
+.acronym-field{
+    border:1px solid rgb(214, 214, 214);
 }
