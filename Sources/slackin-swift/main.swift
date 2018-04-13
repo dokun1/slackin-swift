@@ -6,7 +6,7 @@ import Application
 
 var token: String?
 
-if let argumentToken = SlackArguments.extractToken(from: ProcessInfo().arguments) {
+if let argumentToken = SlackArguments.extractToken(from: CommandLine.arguments) {
     token = argumentToken
 } else {
     do {

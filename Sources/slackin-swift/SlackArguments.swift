@@ -12,13 +12,6 @@ enum SlackError: String, Error {
     case invalidToken = "Token not valid"
 }
 
-public extension ProcessInfo {
-    var isDebugMode: Bool {
-        let dictionary = ProcessInfo().environment
-        return dictionary["DEBUGMODE"] != nil
-    }
-}
-
 class SlackArguments {
     static func extractToken(from arguments: [String]) -> String? {
         guard let last = arguments.last else {
