@@ -32,6 +32,7 @@ class SlackArguments {
     // 2. make the only contents of the file the string of your key, and save it
     // this is a fail safe for running in xcode so you don't have to pass your token in
     static func debug_extractTokenFromFile() throws -> String {
+        #if os(macOS)
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let fileURL = dir.appendingPathComponent("slackkey.txt")
             do {
@@ -43,5 +44,8 @@ class SlackArguments {
         } else {
             throw SlackError.noToken
         }
+        #else
+        throw SlackError.noToken
+        #endif
     }
 }
