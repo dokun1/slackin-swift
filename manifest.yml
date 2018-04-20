@@ -4,7 +4,4 @@ applications:
   timeout: 180
   name: weirdswiftslack
   buildpack: swift_buildpack
-  command: "'slackin-swift $SLACK_TOKEN'"
   memory: 128M
-  env:
-    SLACK_TOKEN: production
