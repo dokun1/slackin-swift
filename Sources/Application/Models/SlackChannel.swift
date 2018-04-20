@@ -7,28 +7,31 @@
 
 import Foundation
 import LoggerAPI
+import SwiftyRequest
 
 struct SlackChannel: Codable {
     var id: String
     var name: String
     
-    static func getAll(token: String) throws -> [SlackChannel]? {
+    static func getAll(token: String, completion: @escaping (_ channels: [SlackChannel]?, _ error: Error?) -> Void) {
         Log.verbose("Requesting channel info")
-        let url = URL(string: "https://slack.com/api/channels.list?token=\(token)")
-        do {
-            Log.verbose("Attempting to retrieve channel information from url: \(String(describing: url))")
-            let response = try Data(contentsOf: url!)
-            Log.verbose("Attempting to decode channel response")
-            let slackResponse = try JSONDecoder().decode(SlackResponse.self, from: response)
-            if let _ = slackResponse.error {
-                Log.error("Error received from Slack API during channel retrieval: \(String(describing: slackResponse.error))")
-                throw SlackResponseError.channelNotFound
-            } else {
-                return slackResponse.channels
+        let url = "https://slack.com/api/channels.list?token=\(token)"
+        Log.verbose("Attempting to retrieve channel information from url: \(url)")
+        let request = RestRequest(method: .get, url: url, containsSelfSignedCert: false)
+        request.responseObject { (response: RestResponse<SlackResponse>) in
+            switch response.result {
+            case .success(let slackResponse):
+                if (slackResponse.error != nil) {
+                    completion(nil, SlackResponseError.channelNotFound)
+                } else {
+                    completion(slackResponse.channels, nil)
+                }
+                break
+            case .failure(let error):
+                Log.error("Error received from Slack API during channel retrieval: \(String(describing: error))")
+                completion(nil, error)
+                break
             }
-        } catch let error {
-            Log.error("Error retrieving channels: \(error.localizedDescription)")
-            throw error
         }
     }
 }

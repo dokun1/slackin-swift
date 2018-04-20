@@ -9,3 +9,4 @@ Package.resolved
 ./config/localdev-config.json
 *.xcodeproj
 slackkey.txt
+quickRunDocker

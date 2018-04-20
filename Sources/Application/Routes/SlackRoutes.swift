@@ -8,8 +8,10 @@
 import Foundation
 import KituraContracts
 import LoggerAPI
+import Dispatch
+import SwiftyRequest
 
-var requestToken: String?
+private var requestToken: String?
 
 func initializeSlackRoutes(app: App) {
     requestToken = app.token
@@ -20,42 +22,39 @@ func initializeSlackRoutes(app: App) {
 }
 
 private func inviteHandler(email: String, completion: @escaping (SlackResponse?, RequestError?) -> Void) {
+    Log.verbose("Attempting to invite email: \(email)")
+    Log.verbose("Checking presence of token")
     guard let token = requestToken else {
         Log.error("Error processing invite - No token found")
         return completion(nil, RequestError.unauthorized)
     }
-    do {
-        Log.verbose("Attempting to fetch channels")
-        guard let channels = try SlackChannel.getAll(token: token) else {
-            Log.error("Error processing invite - no channels list retrieved")
-            return completion(nil, .badRequest)
+    SlackChannel.getAll(token: token) { channels, error in
+        guard let channels = channels else {
+            Log.error("Error retrieving slack channels - collection is nil")
+            return completion(nil, error as? RequestError)
         }
         var approvedChannels = ""
         for channel in channels where channel.name == "general" {
             approvedChannels.append("\(channel.id),")
         }
         Log.verbose("approved channels count: \(approvedChannels.count)")
-        guard let url = URL(string: "https://slack.com/api/users.admin.invite?token=\(token)&email=\(email)&channels=\(approvedChannels.dropLast())") else {
-            return completion(nil, .badRequest)
-        }
-        Log.verbose("invite url: \(String(describing: url))")
-        do {
-            let response = try Data(contentsOf: url)
-            Log.verbose("Received response from invite URL")
-            let slackResponse = try JSONDecoder().decode(SlackResponse.self, from: response)
-            if let _ = slackResponse.error {
-                Log.error("Could not decode invite response")
-                completion(nil, .unauthorized)
-            } else {
-                Log.info("Successfully decoded invite response")
-                completion(slackResponse, nil)
+        let url = "https://slack.com/api/users.admin.invite?token=\(token)&email=\(email)&channels=\(approvedChannels.dropLast())"
+        let request = RestRequest(method: .get, url: url, containsSelfSignedCert: false)
+        request.responseObject { (response: RestResponse<SlackResponse>) in
+            switch response.result {
+            case .success(let slackResponse):
+                if let responseError = slackResponse.error {
+                    Log.error("Slack invitation API returned error: \(responseError)")
+                    completion(nil, .badRequest)
+                } else {
+                    Log.verbose("Successful invitation response")
+                    completion(slackResponse, nil)
+                }
+            case .failure(let error):
+                Log.error("Slack invitation request error: \(error.localizedDescription)")
+                completion(nil, error as? RequestError)
             }
-        } catch let error {
-            Log.error("Error processing invite - \(error.localizedDescription)")
-            completion(nil, RequestError(rawValue: 404, reason: error.localizedDescription))
         }
-    } catch {
-        completion(nil, .badRequest)
     }
 }
 
@@ -65,12 +64,8 @@ private func channelHandler(completion: @escaping ([SlackChannel]?, RequestError
         completion(nil, RequestError.unauthorized)
         return
     }
-    do {
-        let channels = try SlackChannel.getAll(token: token)
-        completion(channels, nil)
-    } catch let error {
-        Log.error("Error fetching channels: \(error.localizedDescription)")
-        completion(nil, RequestError(rawValue: 404, reason: error.localizedDescription))
+    SlackChannel.getAll(token: token) { channels, error in
+        completion(channels, error as? RequestError)
     }
 }
 
@@ -80,11 +75,7 @@ private func teamHandler(completion: @escaping (SlackTeam?, RequestError?) -> Vo
         completion(nil, RequestError.unauthorized)
         return
     }
-    do {
-        let team = try SlackTeam.getInfo(token: token)
-        completion(team, nil)
-    } catch let error {
-        Log.error("Error fetching teams: \(error.localizedDescription)")
-        completion(nil, RequestError(rawValue: 404, reason: error.localizedDescription))
+    SlackTeam.getInfo(token: token) { team, error in
+        completion(team, error as? RequestError)
     }
 }

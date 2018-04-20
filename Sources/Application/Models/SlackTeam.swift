@@ -7,6 +7,7 @@
 
 import Foundation
 import LoggerAPI
+import SwiftyRequest
 
 struct SlackTeamIcon: Codable {
     var image_34: String
@@ -24,24 +25,25 @@ struct SlackTeam: Codable {
     var name: String
     var domain: String
     var icon: SlackTeamIcon
-    
-    static func getInfo(token: String) throws -> SlackTeam? {
+
+    static func getInfo(token: String, completion: @escaping (_ team: SlackTeam?, _ error: Error?) -> Void) {
         Log.verbose("Requesting team info")
-        let url = URL(string: "https://slack.com/api/team.info?token=\(token)")
-        do {
-            Log.verbose("Attempting to retrieve team information from url: \(String(describing: url))")
-            let response = try Data(contentsOf: url!)
-            Log.verbose("Attempting to decode team response")
-            let slackResponse = try JSONDecoder().decode(SlackResponse.self, from: response)
-            if let _ = slackResponse.error {
-                Log.error("Error received from Slack API during team retrieval: \(String(describing: slackResponse.error))")
-                throw SlackResponseError.channelNotFound
-            } else {
-                return slackResponse.team
+        let url = "https://slack.com/api/team.info?token=\(token)"
+        Log.verbose("Attempting to retrieve team information from url: \(url)")
+        let request = RestRequest(method: .get, url: url, containsSelfSignedCert: false)
+        request.responseObject { (response: RestResponse<SlackResponse>) in
+            switch response.result {
+            case .success(let slackResponse):
+                if let responseError = slackResponse.error {
+                    Log.error("Slack API error from team request: \(responseError)")
+                    completion(nil, SlackResponseError.notAllowed)
+                } else {
+                    completion(slackResponse.team, nil)
+                }
+            case .failure(let error):
+                Log.error("Error received from Slack API during team retrieval: \(String(describing: error))")
+                completion(nil, error)
             }
-        } catch let error {
-            Log.error("Error retrieving team: \(error.localizedDescription)")
-            throw error
         }
     }
 }
