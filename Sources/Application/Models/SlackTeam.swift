@@ -29,15 +29,18 @@ struct SlackTeam: Codable {
         Log.verbose("Requesting team info")
         let url = URL(string: "https://slack.com/api/team.info?token=\(token)")
         do {
-            Log.verbose("Team request url: \(String(describing: url))")
+            Log.verbose("Attempting to retrieve team information from url: \(String(describing: url))")
             let response = try Data(contentsOf: url!)
+            Log.verbose("Attempting to decode team response")
             let slackResponse = try JSONDecoder().decode(SlackResponse.self, from: response)
             if let _ = slackResponse.error {
+                Log.error("Error received from Slack API during team retrieval: \(String(describing: slackResponse.error))")
                 throw SlackResponseError.channelNotFound
             } else {
                 return slackResponse.team
             }
         } catch let error {
+            Log.error("Error retrieving team: \(error.localizedDescription)")
             throw error
         }
     }

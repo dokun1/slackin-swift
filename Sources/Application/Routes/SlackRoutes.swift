@@ -16,6 +16,7 @@ func initializeSlackRoutes(app: App) {
     app.router.get("/api/invite/", handler: inviteHandler)
     app.router.get("/api/channels", handler: channelHandler)
     app.router.get("/api/team", handler: teamHandler)
+    Log.info("Slack API routes registered")
 }
 
 private func inviteHandler(email: String, completion: @escaping (SlackResponse?, RequestError?) -> Void) {

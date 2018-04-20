@@ -16,17 +16,17 @@ func initializeWebClientRoutes(app: App) {
     app.router.all(middleware: StaticFileServer())
     app.router.get("/") { _, response, _ in
         do {
-            Log.info("Checking token")
+            Log.verbose("Checking token")
             guard let token = app.token else {
                 try response.status(.internalServerError).render("error", context: ["error": "Token not found"])
                 return
             }
-            Log.info("Retrieving channel list")
+            Log.verbose("Retrieving channel list")
             guard let channels = try SlackChannel.getAll(token: token) else {
                 try response.status(.internalServerError).render("error", context: ["error": "Token not valid"])
                 return
             }
-            Log.info("Retrieving team info token")
+            Log.verbose("Retrieving team info token")
             guard let team = try SlackTeam.getInfo(token: token) else {
                 try response.status(.internalServerError).render("error", context: ["error": "Team not valid"])
                 return
@@ -37,15 +37,15 @@ func initializeWebClientRoutes(app: App) {
 //                return
 //            }
             let userCount = (2, 40)
-            Log.info("Sorting channel list now")
+            Log.verbose("Sorting channel list now")
             let validList = channels.contains { element in
                 return element.name == "general"
             }
             if validList {
-                Log.info("Valid list of channels found - rendering response")
+                Log.verbose("Valid list of channels found - rendering response")
                 try response.status(.OK).render("home", context: ["slackDomain" : team.domain,"slackTeamName": team.name, "slackIconURL": team.icon.image_88, "usersOnline": userCount.0, "usersRegistered": userCount.1])
             } else {
-                Log.info("throwing exception - invalid channel list")
+                Log.error("throwing exception - invalid channel list")
                 throw SlackResponseError.channelNotFound
             }
         } catch let error {

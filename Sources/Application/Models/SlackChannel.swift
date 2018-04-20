@@ -13,13 +13,15 @@ struct SlackChannel: Codable {
     var name: String
     
     static func getAll(token: String) throws -> [SlackChannel]? {
+        Log.verbose("Requesting channel info")
         let url = URL(string: "https://slack.com/api/channels.list?token=\(token)")
         do {
-            Log.info("Attempting to retrieve channel information")
+            Log.verbose("Attempting to retrieve channel information from url: \(String(describing: url))")
             let response = try Data(contentsOf: url!)
-            let decoder = JSONDecoder()
-            let slackResponse = try decoder.decode(SlackResponse.self, from: response)
+            Log.verbose("Attempting to decode channel response")
+            let slackResponse = try JSONDecoder().decode(SlackResponse.self, from: response)
             if let _ = slackResponse.error {
+                Log.error("Error received from Slack API during channel retrieval: \(String(describing: slackResponse.error))")
                 throw SlackResponseError.channelNotFound
             } else {
                 return slackResponse.channels
