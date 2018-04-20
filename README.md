@@ -15,6 +15,9 @@
     <a href="https://github.com/RichardLitt/standard-readme">
 	<img src="https://img.shields.io/badge/standard--readme-OK-green.svg" alt="Standard README Compliant">
     </a>
+    <a href="https://choosealicense.com/licenses/mit/">
+        <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License">
+    </a>
 </p>
 
 ----------------
