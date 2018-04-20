@@ -28,8 +28,11 @@ Heavily inspired, obviously, by [slackin](https://github.com/rauchg/slackin).
 
 ## Requirements
 
-- You must obtain a Slack legacy token. You can do this [here](https://api.slack.com/custom-integrations/legacy-tokens).
-- Ability to deploy to Cloud Foundry with at least 128MB of application memory
+- Swift 4.1
+- macOS 10.13 / Ubuntu 14.04
+- Xcode 9.3
+- a Slack legacy token - get one for your org [here](https://api.slack.com/custom-integrations/legacy-tokens).
+- Cloud Foundry container on IBM Cloud with at least 128MB of application memory
 
 ## Contribute
 
