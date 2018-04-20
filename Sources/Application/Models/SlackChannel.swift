@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LoggerAPI
 
 struct SlackChannel: Codable {
     var id: String
@@ -14,6 +15,7 @@ struct SlackChannel: Codable {
     static func getAll(token: String) throws -> [SlackChannel]? {
         let url = URL(string: "https://slack.com/api/channels.list?token=\(token)")
         do {
+            Log.info("Attempting to retrieve channel information")
             let response = try Data(contentsOf: url!)
             let decoder = JSONDecoder()
             let slackResponse = try decoder.decode(SlackResponse.self, from: response)
@@ -23,6 +25,7 @@ struct SlackChannel: Codable {
                 return slackResponse.channels
             }
         } catch let error {
+            Log.error("Error retrieving channels: \(error.localizedDescription)")
             throw error
         }
     }

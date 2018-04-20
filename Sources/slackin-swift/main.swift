@@ -19,7 +19,7 @@ if let argumentToken = SlackArguments.extractToken(from: CommandLine.arguments) 
 }
 
 do {
-    HeliumLogger.use(LoggerMessageType.info)
+    HeliumLogger.use(LoggerMessageType.verbose)
     let app = try App()
     guard let unwrappedToken = token else {
         throw SlackError.noToken

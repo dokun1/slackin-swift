@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LoggerAPI
 
 struct SlackTeamIcon: Codable {
     var image_34: String
@@ -25,8 +26,10 @@ struct SlackTeam: Codable {
     var icon: SlackTeamIcon
     
     static func getInfo(token: String) throws -> SlackTeam? {
+        Log.verbose("Requesting team info")
         let url = URL(string: "https://slack.com/api/team.info?token=\(token)")
         do {
+            Log.verbose("Team request url: \(String(describing: url))")
             let response = try Data(contentsOf: url!)
             let slackResponse = try JSONDecoder().decode(SlackResponse.self, from: response)
             if let _ = slackResponse.error {
