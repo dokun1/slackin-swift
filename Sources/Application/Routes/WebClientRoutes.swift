@@ -54,7 +54,6 @@ func handleWebClient(request: RouterRequest, response: RouterResponse, next: @es
         slackRequestGroup.notify(queue: DispatchQueue.global(qos: .default), execute: {
             serveClientPage(channels: storedChannels, team: storedTeam, users: storedUserCount, response: response)
         })
-//        slackRequestGroup.notify(queue: DispatchQueue.global(qos: .default), work: serveClientPage(channels: storedChannels, team: storedTeam, users: storedUserCount, response: response))
     } catch let error {
         Log.error(error.localizedDescription)
         try! response.status(.internalServerError).render("error", context: ["error": "uncaught exception: \(error.localizedDescription)"])
@@ -71,11 +70,14 @@ private func serveClientPage(channels: [SlackChannel]?, team: SlackTeam?, users:
             try response.status(.internalServerError).render("error", context: ["error": "could not load team info"])
             return
         }
+        var newUsers = (5, 40)
+        if let users = users {
+            newUsers = users
+        }
 //        guard let users = users else {
 //            try response.status(.internalServerError).render("Error", context: ["error": "could not load available user list"])
 //            return
 //        }
-        let newUsers = (5, 40)
         let validList = channels.contains { element in
             return element.name == "general"
         }

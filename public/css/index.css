@@ -6,7 +6,7 @@
 .menu-container {
     background-color: white;
     color: #000;
- padding-left: 200px 0;
+    padding-left: 200px 0;
     display: flex;
     justify-content: center;
     font-family: 'Open Sans', 'helvetica Neue', 'Helvetica', 'Arial', "Lucida Grande", sans-serif;
@@ -24,7 +24,7 @@
     justify-content: space-around;
     font-family: "Helvetica Neue", Helvetica, Arial;
     font-size:x-small;
-    
+    text-align: center;
     
 }
 .menu-add-component {
@@ -32,25 +32,28 @@
     display: flex;
     justify-content: space-around;
     width: 300px;
-    
+    max-width: 300px;
     font-family: "Helvetica Neue", Helvetica, Arial;
 }
 
 input.button-primary {
-    background-color: #DE1E64;
+    background-color: #E01563;
     color: #FFF;
     margin-bottom: 10px;
-    padding:10px 128px 10px 128px;
-    
+    padding:10px 10px 10px 10px;
+    min-width: 100px;
+    width: 320px;
+    max-width: 350px;
+    white-space: normal;
     font-family: 'Open Sans', 'Arial', sans-serif;
 }
-input.acronym-field {
+input.email-field {
     font-family: 'Open Sans', 'Arial', sans-serif;
     border-color: rgb(214,214,214);
-    
-    padding:10px 100px 10px 100px;
+    text-align: center;
+    padding:10px 10px 10px 10px;
     margin: 4px;
-    
+    width: 320px;
 }
 ::-webkit-input-placeholder {
     font-family: 'Open Sans', 'Arial', sans-serif;
@@ -90,6 +93,6 @@ input.acronym-field {
     margin-bottom:16px;
     font-size:medium;
 }
-.acronym-field{
+.email-field{
     border:1px solid rgb(214, 214, 214);
 }
