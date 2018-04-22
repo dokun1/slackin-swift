@@ -18,10 +18,10 @@
             <p class="text2"><b style="color:#DE1E64">{{ usersOnline }}</b> users online now out of <b>{{ usersRegistered }}</b> registered.</p>
         </div>
         <div class="menu-add">
-            <input id="emailField" class="acronym-field" name="email" placeholder="you@yourdomain.com" />
+            <input id="emailField" class="email-field" name="email" placeholder="you@yourdomain.com"/>
         </div>
         <div class="menu-add">
-            <input class="button-primary" type="submit" value="GET MY INVITE" onClick="submitEmail()">
+            <input id="submitButton" class="button-primary" type="submit" value="GET MY INVITE" onClick="submitEmail(this.id)">
         </div>
         <div class="menu-add">
             <center>
@@ -36,26 +36,41 @@
         </footer>
         </div>
         <script type="text/javascript">
-            function submitEmail() {
+            function submitEmail(btn) {
                 var email = document.getElementById("emailField").value;
+                var button = document.getElementById(btn);
                 if (email == "") {
-                    alert("Email not entered!");
+                    button.style.backgroundColor = "#EE1632";
+                    button.value = "No email provided";
                     return;
                 }
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", "/api/invite/" + email);
                 xhr.onreadystatechange = function() {
+                    button.disabled = false;
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            alert("User invited!!")
+                            button.style.backgroundColor = "#6EBE32";
+                            button.value = "W00T! Check your email";
                         } else {
-                            alert("Something went wrong. Error code: " + xhr.status);
+                            button.style.backgroundColor = "#EE1632";
+                            if (xhr.status === 400) {
+                                button.value = "You have already been invited to Slack. Check for an email from feedback@slack.com.";
+                            } else {
+                                button.value = ("Unexpected error: " + xhr.statusText);
+                            }
                         }
                     }
                 }
+                button.disabled = true;
+                button.style.backgroundColor = "#153BE6";
+                button.value = "Please wait...";
                 xhr.send();
             }
         </script>
         </div>
     </body>
 </html>
+
+
+
