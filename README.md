@@ -26,6 +26,8 @@ Create a landing page invited for a Slack instance you want people to join.
 
 Heavily inspired, obviously, by [slackin](https://github.com/rauchg/slackin).
 
+Want to see it working live? Go [here](https://weirdswiftslack.mybluemix.net/), which is an inviter to my [Weekly Peer Lab](https://meetup.com/weird-swift-atx) in Austin, Texas.
+
 ## Requirements
 
 - Swift 4.1
