@@ -94,7 +94,7 @@ private func serveClientPage(channels: [SlackChannel]?, team: SlackTeam?, users:
             return element.name == "general"
         }
         if validList {
-            let webContext = SlackWebContext(domain: team.domain, teamName: team.name, iconURL: team.icon.mediumImageURL, usersOnline: users.activeCount, usersRegistered: users.totalCount)
+            let webContext = SlackWebContext(domain: team.domain, teamName: team.name, iconURL: team.icon.mediumImageURL ?? team.icon.smallImageURL, usersOnline: users.activeCount, usersRegistered: users.totalCount)
             try response.status(.OK).render("home.stencil", with: webContext, forKey: "context")
         } else {
             Log.error("throwing exception - invalid channel list")

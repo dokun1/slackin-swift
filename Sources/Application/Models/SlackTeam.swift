@@ -11,8 +11,8 @@ import SwiftyRequest
 
 struct SlackTeamIcon: Codable {
     var smallImageURL: String
-    var mediumImageURL: String
-    var largeImageURL: String
+    var mediumImageURL: String?
+    var largeImageURL: String?
     
     enum CodingKeys: String, CodingKey {
         case smallImageURL = "image_34"
