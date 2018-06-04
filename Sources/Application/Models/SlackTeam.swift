@@ -10,14 +10,15 @@ import LoggerAPI
 import SwiftyRequest
 
 struct SlackTeamIcon: Codable {
-    var image_34: String
-    var image_44: String
-    var image_68: String
-    var image_88: String
-    var image_102: String
-    var image_132: String
-    var image_230: String
-    var image_original: String
+    var smallImageURL: String
+    var mediumImageURL: String
+    var largeImageURL: String
+    
+    enum CodingKeys: String, CodingKey {
+        case smallImageURL = "image_34"
+        case mediumImageURL = "image_102"
+        case largeImageURL = "image_original"
+    }
 }
 
 struct SlackTeam: Codable {

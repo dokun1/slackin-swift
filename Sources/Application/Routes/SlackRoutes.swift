@@ -17,6 +17,7 @@ func initializeSlackRoutes(app: App) {
     requestToken = app.token
     app.router.get("/api/invite/", handler: inviteHandler)
     app.router.get("/api/channels", handler: channelHandler)
+    app.router.get("/api/userCount", handler: userCountHandler)
     app.router.get("/api/team", handler: teamHandler)
     Log.info("Slack API routes registered")
 }
@@ -54,6 +55,22 @@ private func inviteHandler(email: String, completion: @escaping (SlackResponse?,
                 Log.error("Slack invitation request error: \(error.localizedDescription)")
                 completion(nil, error as? RequestError)
             }
+        }
+    }
+}
+
+private func userCountHandler(completion: @escaping (SlackUserCount?, RequestError?) -> Void) {
+    guard let token = requestToken else {
+        Log.error("Error processing user count request - No token found")
+        completion(nil, RequestError.unauthorized)
+        return
+    }
+    SlackTeam.getInfo(token: token) { teamInfo, error in
+        guard let teamInfo = teamInfo else {
+            return completion(nil, error as? RequestError)
+        }
+        SlackUser.getActiveCount(token: token, teamInfo: teamInfo) { userCount, error in
+            return completion(userCount, error as? RequestError)
         }
     }
 }

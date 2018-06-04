@@ -13,6 +13,18 @@ import LoggerAPI
 
 private var requestToken: String?
 
+struct SlackWebContextError: Codable {
+    var message: String
+}
+
+struct SlackWebContext: Codable {
+    var slackDomain: String
+    var slackTeamName: String
+    var slackIconURL: String
+    var usersOnline: Int
+    var usersRegistered: Int
+}
+
 func initializeWebClientRoutes(app: App) {
     requestToken = app.token
     app.router.setDefault(templateEngine: StencilTemplateEngine())
@@ -24,12 +36,12 @@ func handleWebClient(request: RouterRequest, response: RouterResponse, next: @es
     do {
         Log.verbose("Checking token")
         guard let token = requestToken else {
-            try response.status(.internalServerError).render("error", context: ["error": "Token not found"])
+            let error = SlackWebContextError(message: "Token not found")
+            try response.status(.internalServerError).render("error.stencil", with: error, forKey: "error")
             return
         }
-        var storedChannels: [SlackChannel]?, storedTeam: SlackTeam?, storedUserCount: (Int, Int)?
+        var storedChannels: [SlackChannel]?, storedTeam: SlackTeam?, storedUserCount: SlackUserCount?
         let slackRequestGroup = DispatchGroup()
-        Log.verbose("Attempting to fetch channels")
         slackRequestGroup.enter()
         SlackChannel.getAll(token: token) { channels, error in
             if let channels = channels {
@@ -38,58 +50,60 @@ func handleWebClient(request: RouterRequest, response: RouterResponse, next: @es
             slackRequestGroup.leave()
         }
         slackRequestGroup.enter()
-        SlackTeam.getInfo(token: token) { team, error in
-            if let team = team {
-                storedTeam = team
+        SlackTeam.getInfo(token: token) { teamInfo, error in
+            if let teamInfo = teamInfo {
+                storedTeam = teamInfo
+                SlackUser.getActiveCount(token: token, teamInfo: teamInfo, completion: { userCount, error in
+                    if let userCount = userCount {
+                        storedUserCount = userCount
+                    }
+                    slackRequestGroup.leave()
+                })
+            } else {
+                slackRequestGroup.leave()
             }
-            slackRequestGroup.leave()
-        }
-        slackRequestGroup.enter()
-        SlackUser.getActiveCount(token: token) { userCount, error in
-            if let userCount = userCount {
-                storedUserCount = userCount
-            }
-            slackRequestGroup.leave()
         }
         slackRequestGroup.notify(queue: DispatchQueue.global(qos: .default), execute: {
             serveClientPage(channels: storedChannels, team: storedTeam, users: storedUserCount, response: response)
         })
     } catch let error {
         Log.error(error.localizedDescription)
-        try! response.status(.internalServerError).render("error", context: ["error": "uncaught exception: \(error.localizedDescription)"])
+        let error = SlackWebContextError(message: "uncaught exception: \(error.localizedDescription)")
+        try! response.status(.internalServerError).render("error.stencil", with: error, forKey: "error")
     }
 }
 
-private func serveClientPage(channels: [SlackChannel]?, team: SlackTeam?, users: (Int, Int)?, response: RouterResponse) {
+private func serveClientPage(channels: [SlackChannel]?, team: SlackTeam?, users: SlackUserCount?, response: RouterResponse) {
     do {
         guard let channels = channels else {
-            try response.status(.internalServerError).render("error", context: ["error": "could not load channels"])
+            let error = SlackWebContextError(message: "Could not load channels")
+            try response.status(.internalServerError).render("error.stencil", with: error, forKey: "error")
             return
         }
         guard let team = team else {
-            try response.status(.internalServerError).render("error", context: ["error": "could not load team info"])
+            let error = SlackWebContextError(message: "Could not load team info")
+            try response.status(.internalServerError).render("error.stencil", with: error, forKey: "error")
             return
         }
-        var newUsers = (5, 40)
-        if let users = users {
-            newUsers = users
+        guard let users = users else {
+            let error = SlackWebContextError(message: "Could not load available user list")
+            try response.status(.internalServerError).render("error.stencil", with: error, forKey: "error")
+            return
         }
-//        guard let users = users else {
-//            try response.status(.internalServerError).render("Error", context: ["error": "could not load available user list"])
-//            return
-//        }
         let validList = channels.contains { element in
             return element.name == "general"
         }
         if validList {
-            try response.status(.OK).render("home", context: ["slackDomain" : team.domain,"slackTeamName": team.name, "slackIconURL": team.icon.image_88, "usersOnline": newUsers.0, "usersRegistered": newUsers.1])
+            let webContext = SlackWebContext(slackDomain: team.domain, slackTeamName: team.name, slackIconURL: team.icon.mediumImageURL, usersOnline: users.activeCount, usersRegistered: users.totalCount)
+            try response.status(.OK).render("home.stencil", with: webContext, forKey: "context")
         } else {
             Log.error("throwing exception - invalid channel list")
             throw SlackResponseError.channelNotFound
         }
     } catch let error {
         Log.error(error.localizedDescription)
-        try! response.status(.internalServerError).render("error", context: ["error": "uncaught exception: \(error.localizedDescription)"])
+        let error = SlackWebContextError(message: "uncaught exception: \(error.localizedDescription)")
+        try! response.status(.internalServerError).render("error.stencil", with: error, forKey: "error")
     }
 }
 
