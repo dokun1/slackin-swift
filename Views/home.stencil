@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Join {{ slackTeamName }} on Slack!</title>
+        <title>Join {{ context.teamName }} on Slack!</title>
         <link rel="shortcut icon" type="image/png" href="https://slack.global.ssl.fastly.net/272a/img/icons/favicon-32.png"/>
         <link rel="stylesheet" href="/css/index.css">
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin,latin-ext">
@@ -9,13 +9,13 @@
     <body>
 <div class="splash">
         <div class="menu-container">
-<div class="logos"><img src="{{ slackIconURL }}" height=50 width=50> </div> <div class="plus">+</div> <div class="logos"> <img src="/img/slackLogo.png" height=50 width=50></div>
+<div class="logos"><img src="{{ context.iconURL }}" height=50 width=50> </div> <div class="plus">+</div> <div class="logos"> <img src="/img/slackLogo.png" height=50 width=50></div>
         </div>
         <div class="menu-container">
-            <p class="text1">Join <b>{{ slackTeamName }}</b> on Slack.</p>
+            <p class="text1">Join <b>{{ context.teamName }}</b> on Slack.</p>
         </div>
         <div class="menu-container">
-            <p class="text2"><b style="color:#DE1E64">{{ usersOnline }}</b> users online now out of <b>{{ usersRegistered }}</b> registered.</p>
+            <p class="text2"><b style="color:#DE1E64">{{ context.usersOnline }}</b> users online now out of <b>{{ context.usersRegistered }}</b> registered.</p>
         </div>
         <div class="menu-add">
             <input id="emailField" class="email-field" name="email" placeholder="you@yourdomain.com"/>
@@ -25,7 +25,7 @@
         </div>
         <div class="menu-add">
             <center>
-            <p>or <a href="https://{{ slackDomain }}.slack.com">sign in.</a><p>
+            <p>or <a href="https://{{ context.domain }}.slack.com">sign in.</a><p>
             </center>
         </div>
         <footer>

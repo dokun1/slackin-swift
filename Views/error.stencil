@@ -10,7 +10,7 @@
             <div class='title'><h1>Slack Inviter Swift - Error</h1></div>
         </div>
         <div class="menu-container">
-            <h2>Error reason: {{ error }}</h4>
+            <h2>Error reason: {{ error.message }}</h4>
         </div>
     </body>
 </html>
