@@ -12,6 +12,7 @@ import Kitura
 import LoggerAPI
 
 private var requestToken: String?
+private var app: App?
 
 struct SlackWebContextError: Codable {
     var message: String

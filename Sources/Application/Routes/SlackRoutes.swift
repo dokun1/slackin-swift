@@ -87,6 +87,9 @@ private func channelHandler(completion: @escaping ([SlackChannel]?, RequestError
 }
 
 private func teamHandler(completion: @escaping (SlackTeam?, RequestError?) -> Void) {
+    if let cachedTeam = App.slackTeam {
+        return completion(cachedTeam, nil)
+    }
     guard let token = requestToken else {
         Log.error("Error processing team request - No token found")
         completion(nil, RequestError.unauthorized)

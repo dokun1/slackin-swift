@@ -6,12 +6,14 @@ import CloudEnvironment
 import KituraContracts
 import Health
 import KituraOpenAPI
+import KituraCORS
 
 public let projectPath = ConfigurationManager.BasePath.project.path
 public let health = Health()
 
 public class App {
     var token: String?
+    static var slackTeam: SlackTeam?
     let router = Router()
     let cloudEnv = CloudEnv()
 
@@ -22,6 +24,9 @@ public class App {
 
     func postInit() throws {
         // Endpoints
+        let options = Options(allowedOrigin: .all)
+        let cors = CORS(options: options)
+        router.all("/*", middleware: cors)
         initializeHealthRoutes(app: self)
         initializeSlackRoutes(app: self)
         initializeWebClientRoutes(app: self)

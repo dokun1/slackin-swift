@@ -29,6 +29,10 @@ struct SlackTeam: Codable {
 
     static func getInfo(token: String, completion: @escaping (_ team: SlackTeam?, _ error: Error?) -> Void) {
         Log.verbose("Requesting team info")
+        Log.verbose("Checking cache first")
+        if let cachedTeam = App.slackTeam {
+            return completion(cachedTeam, nil)
+        }
         let url = "https://slack.com/api/team.info?token=\(token)"
         Log.verbose("Attempting to retrieve team information from url: \(url)")
         let request = RestRequest(method: .get, url: url, containsSelfSignedCert: false)
@@ -39,6 +43,7 @@ struct SlackTeam: Codable {
                     Log.error("Slack API error from team request: \(responseError)")
                     completion(nil, SlackResponseError.notAllowed)
                 } else {
+                    App.slackTeam = slackResponse.team
                     completion(slackResponse.team, nil)
                 }
             case .failure(let error):
