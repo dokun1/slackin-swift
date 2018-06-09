@@ -36,7 +36,10 @@ class SlackArguments {
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let fileURL = dir.appendingPathComponent("slackkey.txt")
             do {
-                let token = try String(contentsOf: fileURL, encoding: .utf8).trimmingCharacters(in: .newlines)
+                let tokenArg = try String(contentsOf: fileURL, encoding: .utf8).trimmingCharacters(in: .newlines)
+                guard let token = extractToken(from: [tokenArg]) else {
+                    throw SlackError.noToken
+                }
                 return token
             } catch {
                 throw SlackError.noToken
