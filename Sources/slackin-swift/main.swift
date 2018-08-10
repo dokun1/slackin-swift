@@ -6,7 +6,7 @@ import Application
 
 var token: String?
 
-HeliumLogger.use(LoggerMessageType.verbose)
+HeliumLogger.use(LoggerMessageType.info)
 
 if let argumentToken = SlackArguments.extractToken(from: CommandLine.arguments) {
     Log.verbose("Token found and validated: \(argumentToken)")

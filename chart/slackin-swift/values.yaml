@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: registry.ng.bluemix.net/replace-me-namespace/slackin-swift
+  repository: registry.ng.bluemix.net/dokun/slackin-swift
   tag: v1.0.0
   pullPolicy: Always
   resources:
