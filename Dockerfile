@@ -1,5 +1,6 @@
-FROM ibmcom/swift-ubuntu-runtime:4.1
-MAINTAINER IBM Swift Engineering at IBM Cloud
+
+FROM ibmcom/swift-ubuntu-runtime:4.1.1
+LABEL maintainer="IBM Swift Engineering at IBM Cloud"
 LABEL Description="Template Dockerfile that extends the ibmcom/swift-ubuntu-runtime image."
 
 # We can replace this port with what the user wants
@@ -8,6 +9,7 @@ EXPOSE 8080
 # Default user if not provided
 ARG bx_dev_user=root
 ARG bx_dev_userid=1000
+ARG SLACK_TOKEN=xoxp-123456789310-123456789012-123456789012-9cec3291e77ba34936a49da53bcbb806
 
 # Install system level packages
 # RUN apt-get update && apt-get dist-upgrade -y
@@ -24,4 +26,5 @@ RUN if [ $bx_dev_user != "root" ]; then useradd -ms /bin/bash -u $bx_dev_userid 
 COPY . /swift-project
 
 # Command to start Swift application
-CMD [ "sh", "-c", "cd /swift-project && .build-ubuntu/release/slackin-swift" ]
+RUN /bin/bash -c './swift-project/.build-ubuntu/release/slackin-swift ${SLACK_TOKEN}'
+#CMD [ "sh", "-c", "./swift-project/.build-ubuntu/release/slackin-swift", "${SLACK_TOKEN}" ]

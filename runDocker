@@ -1,5 +1,5 @@
 #!/bin/bash
-docker build -t slackin-swift-run .
 docker build -t slackin-swift-build -f Dockerfile-tools .
-docker run -v $PWD:/root/project -w /root/project slackin-swift-build /swift-utils/tools-utils.sh build release
-docker run -it -p 8080:8080 -v $PWD:/root/project -w /root/project slackin-swift-run sh -c ".build-ubuntu/release/slackin-swift $1"
+docker run -v $PWD:/swift-project -w /swift-project slackin-swift-build /swift-utils/tools-utils.sh build release
+docker build -t slackin-swift --build-arg SLACK_TOKEN=$1 .
+docker run -p 8080:8080 slackin-swift
