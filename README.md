@@ -10,7 +10,7 @@
 	<img src="https://img.shields.io/badge/Built%20With-Kitura-blue.svg" alt="Pods Version">
     </a>
     <a href="https://developer.ibm.com/swift/">
-	<img src="https://img.shields.io/badge/platform-swift%204.1-orange.svg" alt="Carthage Compatible">
+	<img src="https://img.shields.io/badge/platform-swift%204.2-orange.svg" alt="Carthage Compatible">
     </a>
     <a href="https://github.com/RichardLitt/standard-readme">
 	<img src="https://img.shields.io/badge/standard--readme-OK-green.svg" alt="Standard README Compliant">
@@ -30,9 +30,9 @@ Want to see it working live? Go [here](https://weirdswiftslack.mybluemix.net/), 
 
 ## Requirements
 
-- Swift 4.1
+- Swift 4.2
 - macOS 10.13 / Ubuntu 14.04
-- Xcode 9.3
+- Xcode 10.1
 - a Slack legacy token - get one for your org [here](https://api.slack.com/custom-integrations/legacy-tokens).
 - Cloud Foundry container on IBM Cloud with at least 128MB of application memory
 
@@ -74,6 +74,16 @@ There is a run script provided with the repository titled `runDocker` that utili
 
 Note that, in the script, the names of the images created can be modified, but everything is consistently named for the sake of simplicity.
 
+## Deploying to Cloud Foundry
+
+1. Set up a Cloud Foundry Swift application.
+2. Use the [IBM Cloud CLI](https://console.bluemix.net/docs/cli/index.html?cm_mc_uid=50339162900715449788959&cm_mc_sid_50200000=98576851550781824754&cm_mc_sid_52640000=76443131550781824755#overview) to target the right organization.
+3. Use the command `ibmcloud app push -c 'slackin-swift **your token here**'` to deploy.
+
+## Deploying to Kubernetes with Docker
+
+*Coming soon...*
+
 ## License
 
-[MIT](LICENSE) © 2018 David Okun
+[MIT](LICENSE) © 2019 David Okun
